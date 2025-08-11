@@ -1,0 +1,26 @@
+# Placeholdy Configuration File
+# Author: EinPallux
+#
+# This plugin allows you to create custom placeholders that can be used
+# across all your server configuration files.
+#
+# Usage: %placeholdy_<placeholder_name>%
+# Example: %placeholdy_servername% will be replaced with the value below
+
+placeholders:
+  # Server Information
+  servername: "Your Server Name"
+  serverip: "play.yourserver.com"
+  website: "https://yourserver.com"
+
+  # Social Media Links
+  discord: "https://discord.gg/yourserver"
+  youtube: "https://youtube.com/yourchannel"
+  twitter: "https://twitter.com/yourserver"
+  instagram: "https://instagram.com/yourserver"
+
+  # Store Information
+  store: "https://store.yourserver.com"
+
+  # Custom placeholders - Add your own below
+  # customplaceholder: "Your custom value"

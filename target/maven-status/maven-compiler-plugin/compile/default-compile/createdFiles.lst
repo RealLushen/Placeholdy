@@ -1,0 +1,6 @@
+de\einpallux\placeholdy\listeners\PlaceholderListener.class
+de\einpallux\placeholdy\placeholders\PlaceholderManager.class
+de\einpallux\placeholdy\placeholderapi\PlaceholdyExpansion.class
+de\einpallux\placeholdy\Placeholdy.class
+de\einpallux\placeholdy\config\ConfigManager.class
+de\einpallux\placeholdy\commands\PlaceholdyCommand.class

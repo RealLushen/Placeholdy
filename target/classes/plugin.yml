@@ -1,0 +1,20 @@
+name: Placeholdy
+version: 1.0.0
+main: de.einpallux.placeholdy.Placeholdy
+api-version: 1.21
+author: EinPallux
+description: A plugin to simplify server branding with custom placeholders
+website: https://github.com/EinPallux/Placeholdy
+softdepend: [PlaceholderAPI]
+
+commands:
+  placeholdy:
+    description: Main command for Placeholdy
+    usage: /<command> [reload|list|set <placeholder> <value>|remove <placeholder>]
+    permission: placeholdy.admin
+    aliases: [ph]
+
+permissions:
+  placeholdy.admin:
+    description: Allows access to all Placeholdy commands
+    default: op
