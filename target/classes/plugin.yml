@@ -4,7 +4,6 @@ main: de.einpallux.placeholdy.Placeholdy
 api-version: 1.21
 author: EinPallux
 description: A plugin to simplify server branding with custom placeholders
-website: https://github.com/EinPallux/Placeholdy
 softdepend: [PlaceholderAPI]
 
 commands:

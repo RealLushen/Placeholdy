@@ -1,7 +1,6 @@
 package de.einpallux.placeholdy.commands;
 
 import de.einpallux.placeholdy.Placeholdy;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +22,7 @@ public class PlaceholdyCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("placeholdy.admin")) {
-            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
+            plugin.getMessageService().send(sender, "<red>You don't have permission to use this command!</red>");
             return true;
         }
 
@@ -35,7 +34,7 @@ public class PlaceholdyCommand implements CommandExecutor, TabCompleter {
         switch (args[0].toLowerCase()) {
             case "reload":
                 plugin.reload();
-                sender.sendMessage(ChatColor.GREEN + "Placeholdy has been reloaded successfully!");
+                plugin.getMessageService().send(sender, "<green>Placeholdy has been reloaded successfully!</green>");
                 break;
 
             case "list":
@@ -44,7 +43,7 @@ public class PlaceholdyCommand implements CommandExecutor, TabCompleter {
 
             case "set":
                 if (args.length < 3) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /placeholdy set <placeholder> <value>");
+                    plugin.getMessageService().send(sender, "<red>Usage: /placeholdy set <placeholder> <value></red>");
                     return true;
                 }
                 setPlaceholder(sender, args[1], String.join(" ", Arrays.copyOfRange(args, 2, args.length)));
@@ -52,7 +51,7 @@ public class PlaceholdyCommand implements CommandExecutor, TabCompleter {
 
             case "remove":
                 if (args.length < 2) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /placeholdy remove <placeholder>");
+                    plugin.getMessageService().send(sender, "<red>Usage: /placeholdy remove <placeholder></red>");
                     return true;
                 }
                 removePlaceholder(sender, args[1]);
@@ -60,7 +59,7 @@ public class PlaceholdyCommand implements CommandExecutor, TabCompleter {
 
             case "test":
                 if (args.length < 2) {
-                    sender.sendMessage(ChatColor.RED + "Usage: /placeholdy test <text with placeholders>");
+                    plugin.getMessageService().send(sender, "<red>Usage: /placeholdy test <text with placeholders></red>");
                     return true;
                 }
                 testPlaceholder(sender, String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
@@ -75,51 +74,49 @@ public class PlaceholdyCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelpMessage(CommandSender sender) {
-        sender.sendMessage(ChatColor.GOLD + "=== Placeholdy Commands ===");
-        sender.sendMessage(ChatColor.YELLOW + "/placeholdy reload" + ChatColor.WHITE + " - Reload the plugin");
-        sender.sendMessage(ChatColor.YELLOW + "/placeholdy list" + ChatColor.WHITE + " - List all placeholders");
-        sender.sendMessage(ChatColor.YELLOW + "/placeholdy set <placeholder> <value>" + ChatColor.WHITE + " - Set a placeholder");
-        sender.sendMessage(ChatColor.YELLOW + "/placeholdy remove <placeholder>" + ChatColor.WHITE + " - Remove a placeholder");
-        sender.sendMessage(ChatColor.YELLOW + "/placeholdy test <text>" + ChatColor.WHITE + " - Test placeholder replacement");
-        sender.sendMessage(ChatColor.GRAY + "Note: With PlaceholderAPI installed, use %placeholdy_<name>% in other plugins");
+        plugin.getMessageService().send(sender, "<gold>=== Placeholdy Commands ===</gold>");
+        plugin.getMessageService().send(sender, "<yellow>/placeholdy reload</yellow><gray> - Reload the plugin</gray>");
+        plugin.getMessageService().send(sender, "<yellow>/placeholdy list</yellow><gray> - List all placeholders</gray>");
+        plugin.getMessageService().send(sender, "<yellow>/placeholdy set <placeholder> <value></yellow><gray> - Set a placeholder</gray>");
+        plugin.getMessageService().send(sender, "<yellow>/placeholdy remove <placeholder></yellow><gray> - Remove a placeholder</gray>");
+        plugin.getMessageService().send(sender, "<yellow>/placeholdy test <text></yellow><gray> - Test placeholder replacement</gray>");
+        plugin.getMessageService().send(sender, "<gray>Note: With PlaceholderAPI installed, use %placeholdy_<name>% in other plugins</gray>");
     }
 
     private void listPlaceholders(CommandSender sender) {
         Map<String, String> placeholders = plugin.getPlaceholderManager().getAllPlaceholders();
 
         if (placeholders.isEmpty()) {
-            sender.sendMessage(ChatColor.YELLOW + "No placeholders configured!");
+            plugin.getMessageService().send(sender, "<yellow>No placeholders configured!</yellow>");
             return;
         }
 
-        sender.sendMessage(ChatColor.GOLD + "=== Configured Placeholders ===");
+        plugin.getMessageService().send(sender, "<gold>=== Configured Placeholders ===</gold>");
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-            sender.sendMessage(ChatColor.YELLOW + "%placeholdy_" + entry.getKey() + "%" +
-                    ChatColor.WHITE + " -> " + ChatColor.GREEN + entry.getValue());
+            String line = "<yellow>%placeholdy_" + entry.getKey() + "%</yellow><gray> -> </gray><green>" + entry.getValue() + "</green>";
+            plugin.getMessageService().send(sender, line);
         }
     }
 
     private void setPlaceholder(CommandSender sender, String key, String value) {
         plugin.getPlaceholderManager().addPlaceholder(key, value);
-        sender.sendMessage(ChatColor.GREEN + "Placeholder " + ChatColor.YELLOW + "%placeholdy_" + key + "%" +
-                ChatColor.GREEN + " has been set to: " + ChatColor.WHITE + value);
+        plugin.getMessageService().send(sender, "<green>Placeholder <yellow>%placeholdy_" + key + "%</yellow> has been set to: <white>" + value + "</white></green>");
     }
 
     private void removePlaceholder(CommandSender sender, String key) {
         if (plugin.getPlaceholderManager().hasPlaceholder(key)) {
             plugin.getPlaceholderManager().removePlaceholder(key);
-            sender.sendMessage(ChatColor.GREEN + "Placeholder " + ChatColor.YELLOW + "%placeholdy_" + key + "%" +
-                    ChatColor.GREEN + " has been removed!");
+            plugin.getMessageService().send(sender, "<green>Placeholder <yellow>%placeholdy_" + key + "%</yellow> has been removed!</green>");
         } else {
-            sender.sendMessage(ChatColor.RED + "Placeholder " + ChatColor.YELLOW + "%placeholdy_" + key + "%" +
-                    ChatColor.RED + " does not exist!");
+            plugin.getMessageService().send(sender, "<red>Placeholder <yellow>%placeholdy_" + key + "%</yellow> does not exist!</red>");
         }
     }
 
     private void testPlaceholder(CommandSender sender, String text) {
         String result = plugin.getPlaceholderManager().replacePlaceholders(text);
-        sender.sendMessage(ChatColor.GOLD + "Original: " + ChatColor.WHITE + text);
-        sender.sendMessage(ChatColor.GOLD + "Result: " + ChatColor.WHITE + result);
+        plugin.getMessageService().send(sender, "<gold>Original: </gold><white>" + text + "</white>");
+        // Show MiniMessage-parsed result too
+        plugin.getMessageService().send(sender, "<gold>Result: </gold>" + result);
     }
 
     @Override

@@ -5,6 +5,7 @@ import de.einpallux.placeholdy.config.ConfigManager;
 import de.einpallux.placeholdy.listeners.PlaceholderListener;
 import de.einpallux.placeholdy.placeholders.PlaceholderManager;
 import de.einpallux.placeholdy.placeholderapi.PlaceholdyExpansion;
+import de.einpallux.placeholdy.util.MessageService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ public final class Placeholdy extends JavaPlugin {
     private ConfigManager configManager;
     private PlaceholderManager placeholderManager;
     private PlaceholdyExpansion placeholderExpansion;
+    private MessageService messageService;
 
     @Override
     public void onEnable() {
@@ -27,6 +29,9 @@ public final class Placeholdy extends JavaPlugin {
 
         // Now initialize placeholder manager
         this.placeholderManager = new PlaceholderManager(this);
+
+        // Initialize messaging service (MiniMessage + replacements)
+        this.messageService = new MessageService(this);
 
         // Register commands
         getCommand("placeholdy").setExecutor(new PlaceholdyCommand(this));
@@ -70,6 +75,10 @@ public final class Placeholdy extends JavaPlugin {
 
     public PlaceholderManager getPlaceholderManager() {
         return placeholderManager;
+    }
+
+    public MessageService getMessageService() {
+        return messageService;
     }
 
     public void reload() {
